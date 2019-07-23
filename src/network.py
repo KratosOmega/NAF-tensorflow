@@ -12,10 +12,10 @@ class Network:
                hidden_w, action_w, hidden_fn, action_fn, w_reg,
                scope='NAF'):
     self.sess = sess
-    with tf.variable_scope(scope):
-      x = tf.placeholder(tf.float32, (None,) + tuple(input_shape), name='observations')
-      u = tf.placeholder(tf.float32, (None, action_size), name='actions')
-      is_train = tf.placeholder(tf.bool, name='is_train')
+    with tf.compat.v1.variable_scope(scope):
+      x = tf.compat.v1.placeholder(tf.float32, (None,) + tuple(input_shape), name='observations')
+      u = tf.compat.v1.placeholder(tf.float32, (None, action_size), name='actions')
+      is_train = tf.compat.v1.placeholder(tf.bool, name='is_train')
 
       hid_outs = {}
       with tf.name_scope('hidden'):
@@ -23,7 +23,7 @@ class Network:
           logger.info("Creating seperate networks for v, l, and mu")
 
           for scope in ['v', 'l', 'mu']:
-            with tf.variable_scope(scope):
+            with tf.compat.v1.variable_scope(scope):
               if use_batch_norm:
                 h = batch_norm(x, is_training=is_train)
               else:
@@ -51,14 +51,14 @@ class Network:
                hidden_w, use_batch_norm=use_batch_norm, scope='V')
 
       with tf.name_scope('advantage'):
-        l = fc(hid_outs['l'], (action_size * (action_size + 1))/2, is_train, hidden_w,
+        l = fc(hid_outs['l'], int((action_size * (action_size + 1))/2), is_train, hidden_w,
                use_batch_norm=use_batch_norm, scope='l')
         mu = fc(hid_outs['mu'], action_size, is_train, action_w,
                 activation_fn=action_fn, use_batch_norm=use_batch_norm, scope='mu')
 
         pivot = 0
         rows = []
-        for idx in xrange(action_size):
+        for idx in range(action_size):
           count = action_size - idx
 
           diag_elem = tf.exp(tf.slice(l, (0, pivot), (-1, 1)))
@@ -79,8 +79,8 @@ class Network:
         Q = A + V
 
       with tf.name_scope('optimization'):
-        self.target_y = tf.placeholder(tf.float32, [None], name='target_y')
-        self.loss = tf.reduce_mean(tf.squared_difference(self.target_y, tf.squeeze(Q)), name='loss')
+        self.target_y = tf.compat.v1.placeholder(tf.float32, [None], name='target_y')
+        self.loss = tf.reduce_mean(tf.compat.v1.squared_difference(self.target_y, tf.squeeze(Q)), name='loss')
 
     self.is_train = is_train
     self.variables = get_variables(scope)

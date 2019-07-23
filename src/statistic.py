@@ -14,13 +14,13 @@ class Statistic(object):
     self.reset()
     self.max_avg_r = None
 
-    with tf.variable_scope('t'):
+    with tf.compat.v1.variable_scope('t'):
       self.t_op = tf.Variable(0, trainable=False, name='t')
       self.t_add_op = self.t_op.assign_add(1)
 
     self.model_dir = model_dir
-    self.saver = tf.train.Saver(variables + [self.t_op], max_to_keep=max_to_keep)
-    self.writer = tf.summary.FileWriter('./logs/%s' % self.model_dir, self.sess.graph)
+    self.saver = tf.compat.v1.train.Saver(variables + [self.t_op], max_to_keep=max_to_keep)
+    self.writer = tf.summary.compat.v1.FileWriter('./logs/%s' % self.model_dir, self.sess.graph)
 
     with tf.variable_scope('summary'):
       scalar_summary_tags = ['total r', 'avg r', 'avg q', 'avg v', 'avg a', 'avg l']

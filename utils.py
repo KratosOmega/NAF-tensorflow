@@ -11,8 +11,7 @@ def get_model_dir(config, exceptions=None):
   attrs = config.__flags
   pp(attrs)
 
-  keys = attrs.keys()
-  keys.sort()
+  keys = sorted(attrs.keys())
   keys.remove('env_name')
   keys = ['env_name'] + keys
 

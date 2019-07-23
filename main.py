@@ -62,7 +62,7 @@ def main(_):
 
   preprocess_conf(conf)
 
-  with tf.Session() as sess:
+  with tf.compat.v1.Session() as sess:
     # environment
     env = gym.make(conf.env_name)
     env.seed(conf.random_seed)

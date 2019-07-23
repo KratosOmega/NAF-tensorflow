@@ -24,7 +24,7 @@ def fc(layer, output_size, is_training,
   else:
     batch_norm_args = {}
 
-  with tf.variable_scope(scope):
+  with tf.compat.v1.variable_scope(scope):
     return fully_connected(
       layer,
       num_outputs=output_size,

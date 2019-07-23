@@ -137,11 +137,11 @@ class NAF(object):
         if done:
           break
 
-      print "average loss:", loss_/k
-      print "Episode {} finished after {} timesteps, reward {}".format(i_episode + 1, t + 1, episode_reward)
+      print("average loss:", loss_/k)
+      print("Episode {} finished after {} timesteps, reward {}".format(i_episode + 1, t + 1, episode_reward))
       total_reward += episode_reward
 
-    print "Average reward per episode {}".format(total_reward / self.episodes)
+    print("Average reward per episode {}".format(total_reward / self.episodes))
 
   def predict(self, state):
     u = self.pred_network.predict([state])[0]
