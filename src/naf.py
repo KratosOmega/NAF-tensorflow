@@ -47,10 +47,10 @@ class NAF(object):
     if monitor:
       self.env.monitor.start('/tmp/%s-%s' % (self.stat.env_name, get_timestamp()))
 
-    for self.idx_episode in xrange(self.max_episodes):
+    for self.idx_episode in range(self.max_episodes):
       state = self.env.reset()
 
-      for t in xrange(0, self.max_steps):
+      for t in range(0, self.max_steps):
         if display: self.env.render()
 
         # 1. predict
@@ -95,11 +95,11 @@ class NAF(object):
 
     # the main learning loop
     total_reward = 0
-    for i_episode in xrange(self.max_episodes):
+    for i_episode in range(self.max_episodes):
       observation = self.env.reset()
       episode_reward = 0
 
-      for t in xrange(self.max_steps):
+      for t in range(self.max_steps):
         if display:
           self.env.render()
 
@@ -119,7 +119,7 @@ class NAF(object):
 
         if len(prestates) > 10:
           loss_ = 0
-          for k in xrange(self.update_repeat):
+          for k in range(self.update_repeat):
             if len(prestates) > self.batch_size:
               indexes = np.random.choice(len(prestates), size=self.batch_size)
             else:
@@ -160,7 +160,7 @@ class NAF(object):
     a_list = []
     l_list = []
 
-    for iteration in xrange(self.update_repeat):
+    for iteration in range(self.update_repeat):
       if len(self.rewards) >= self.batch_size:
         indexes = np.random.choice(len(self.rewards), size=self.batch_size)
       else:

@@ -20,7 +20,8 @@ class Statistic(object):
 
     self.model_dir = model_dir
     self.saver = tf.compat.v1.train.Saver(variables + [self.t_op], max_to_keep=max_to_keep)
-    self.writer = tf.compat.v1.summary.FileWriter('./logs/%s' % self.model_dir, self.sess.graph)
+    #self.writer = tf.compat.v1.summary.FileWriter('./logs/%s' % self.model_dir, self.sess.graph)
+    self.writer = tf.compat.v1.summary.FileWriter('./logs/model_summary.txt')
 
     with tf.variable_scope('summary'):
       scalar_summary_tags = ['total r', 'avg r', 'avg q', 'avg v', 'avg a', 'avg l']
@@ -29,7 +30,7 @@ class Statistic(object):
       self.summary_ops = {}
 
       for tag in scalar_summary_tags:
-        self.summary_placeholders[tag] = tf.placeholder('float32', None, name=tag.replace(' ', '_'))
+        self.summary_placeholders[tag] = tf.compat.v1.placeholder('float32', None, name=tag.replace(' ', '_'))
         self.summary_ops[tag]  = tf.summary.scalar('%s/%s' % (self.env_name, tag), self.summary_placeholders[tag])
 
   def reset(self):
